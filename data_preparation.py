@@ -38,16 +38,16 @@ def generate_single_output_data(series,batch_size,time_steps):
     series = series.reshape(-1, 1)
     onehot_encoder = OneHotEncoder(sparse=False)
     onehot_encoded = onehot_encoder.fit(series)
-
+   
     series = series.reshape(-1)
-
+    print(series.shape)
     data = strided_app(series, time_steps+1, 1)
     l = int(len(data)/batch_size) * batch_size
-
+    print(l)
     data = data[:l] 
     print(data.shape)
     X = data[:, :-1]
-    Y = data[:, -1:]
+    Y_raw = data[:, -1:]
 
-    Y = onehot_encoder.transform(Y)
-    return X,Y
+    Y = onehot_encoder.transform(Y_raw)
+    return X,Y_raw,Y
